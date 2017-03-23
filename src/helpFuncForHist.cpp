@@ -91,38 +91,4 @@ void compareTwoMat(const Mat firstMat, const Mat secondMat) {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-ushort findBarrierByTriangeMethod(const int _leftPoint,const int _rightPoint, const uint * _matArr ) {
-    uint desiredBarrier = _leftPoint;
-    //add some aliases for more easily "for"
-    double valueInTheLeftPoint = *(_matArr + _leftPoint);
-    double valueInTheRightPoint = *(_matArr + _rightPoint);
-    double valueInThePointFromTheSection = _leftPoint;
-    double maxDistance = 0, tempDistance = 0;
-    //add new double variables for a accurate calc
-    double leftPoint = _leftPoint, rightPoint = _rightPoint;
-    //under this line you can see some from hell
-    //if you want to understand this you must read formula of line by two points
-    //and formula of distance from the point to the line and combine them
-    for (int i = _leftPoint ; i <= _rightPoint; i++) {
-        valueInThePointFromTheSection = *(_matArr + i);
-        tempDistance =
-        abs(
-            (1 / (rightPoint - leftPoint) ) * i +
-            (-1 / (valueInTheRightPoint - valueInTheLeftPoint) * valueInThePointFromTheSection) +
-            valueInTheLeftPoint / (valueInTheRightPoint - valueInTheLeftPoint) -
-            leftPoint / ( rightPoint - leftPoint)
-            ) /
-        sqrt(
-             1 / (pow(rightPoint - leftPoint, 2)) +
-             1 / (pow(valueInTheRightPoint - valueInTheLeftPoint, 2) )
-             );
-        
-        if (tempDistance > maxDistance) {
-            maxDistance = tempDistance;
-            desiredBarrier = i;
-        }
-    }
-    // if you need to some debug and show intermediate values then move cout in if scope
-    std::cout <<"new barrier is - " << desiredBarrier << " distance to him = " << tempDistance << std::endl;
-    return desiredBarrier;
-}
+
