@@ -21,7 +21,7 @@
 #include "../src/workWithHist.cpp"
 #include "../src/grayToBin.cpp"
 
-
+//rows cols
 using namespace cv;
 using namespace std;
 
@@ -38,17 +38,19 @@ int main( )
     // init arr and filling from gray image
     initHistArr(histArrOfErlangPic);
     fillArrayWithValuesFromGI(histArrOfErlangPic, erlangePic);
-    
     // the declaration of the flags of the describing min an max
     uint maxPoint = 0;
     uint higthOfErlangHist = findMaxValueInHistArrayAndFixIndex(histArrOfErlangPic, &maxPoint);
     //show max and min values for debug
-    cout <<"min value = " << higthOfErlangHist << " in point - " << maxPoint << endl;
-
+    cout <<"max value = " << higthOfErlangHist << " in point - " << maxPoint << endl;
     //show histogram
     Mat histOfErlangPic = getNewHistWihtParam(histArrOfErlangPic, 256, higthOfErlangHist,4);
-
+    
+    //some debug
+    std::cout << "erl max = " <<  findErlangNoiseMax(0, 255, 1, 3)<<std::endl;
+    //show time
     imshow("erlangPicHist",histOfErlangPic);
+    imshow("tempPic",createPicForFilter(256,256));
     waitKey(0);
     return 0;
 }
