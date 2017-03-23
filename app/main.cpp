@@ -19,7 +19,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "iostream"
 #include "../src/workWithHist.cpp"
-#include "../src/grayToBin.cpp"
+#include "../src/helpFuncForHist.cpp"
+#include "../src/matMorphOper.cpp"
 
 //rows cols
 using namespace cv;
@@ -32,7 +33,7 @@ int main( )
         cout <<  "Could not open or find the image" << std::endl ;
         return -1;
     }
-    
+    double tempCount = 15;
     // declarate arr
     uint *histArrOfErlangPic = new uint[256];
     // init arr and filling from gray image
@@ -47,9 +48,18 @@ int main( )
     Mat histOfErlangPic = getNewHistWihtParam(histArrOfErlangPic, 256, higthOfErlangHist,4);
     
     //some debug
-    std::cout << "erl max = " <<  findErlangNoiseMax(0, 255, 1, 3)<<std::endl;
+    std::cout << "erl max = " <<  findErlangNoiseMax(0, 255, tempCount, tempCount)<<std::endl;
+
+    // use dilation
+    Mat dilationMat = dilationForGrayScale(erlangePic, 11);
+    Mat erosionMat = erosionForGrayScale(erlangePic, 3);
+    Mat dilationAndErosionMat = erosionForGrayScale(dilationMat, 3);
     //show time
+    imshow("input image", erlangePic);
     imshow("erlangPicHist",histOfErlangPic);
+    imshow("pic after dilation", dilationMat);
+    imshow("pic after erosion", erosionMat);
+    imshow("final pic", dilationAndErosionMat);
     imshow("tempPic",createPicForFilter(256,256));
     waitKey(0);
     return 0;
