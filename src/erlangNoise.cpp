@@ -7,6 +7,8 @@
 //
 
 #include <stdio.h>
+
+// create working image
 cv::Mat createPicForFilter (const int rows,const int cols) {
     double leftRowBarrier = double(rows/4);
     double rightRowBarrier = double(rows*3/4);
@@ -32,10 +34,6 @@ cv::Mat createPicForFilter (const int rows,const int cols) {
     return result;
 }
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 uint factorialFunc(const int _inputValue ) {
     if ((_inputValue == 1) || (_inputValue == 0) ){
@@ -45,15 +43,12 @@ uint factorialFunc(const int _inputValue ) {
         return _inputValue * (factorialFunc (_inputValue - 1 ));
     }
 }
-//////////////////////////////////////////////////////////////////////////////////////////
-uint calcCountOfNoisePixels(const int _size, const int _proc) {
-    return (_size * _proc / 100);
-}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 double erlangNoise (
                   const int _z,
-                  const int _a,
-                  const int _b
+                  const double _a,
+                  const double _b
                   ) {
     // a and b are parametrs from erlang noise
     // erlang noice formula is
@@ -70,17 +65,16 @@ double erlangNoise (
         result = double(_a * pow(_b-1,_b-1))  / double((factorialFunc(_b-1))) * double(exp(-(_b-1) ) );
     }
     printf("erlang noise result is %f\n",double(_a * pow(_b-1,_b-1))  / double((factorialFunc(_b-1))) * double(exp(-(_b-1) ) ));
-    printf("z - %d a - %d b - %d\n",_z,_a,_b);
+    printf("z - %d a - %f b - %f\n",_z,_a,_b);
     return result;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-double findErlangNoiseMax(const int _start,const int _finish, const int _a,const int _b) {
+double findErlangNoiseMax(const int _start,const int _finish, const double _a,const double _b) {
     double max = 0 ;
     for (int i = _start; i <= _finish; i++) {
         if (erlangNoise(i, _a, _b) > max ) {
             max = erlangNoise(i, _a, _b);
-            printf("max %f\n",erlangNoise(i, _a, _b));
         }
     }
     return max;
