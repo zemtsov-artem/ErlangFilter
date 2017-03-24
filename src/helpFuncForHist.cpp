@@ -7,7 +7,7 @@
 //
 
 #include <stdio.h>
-//x
+
 void initHistArr(uint *_histArr){
     for (int i =0; i<256; i++) {
         *(_histArr + i) = 0;
@@ -35,4 +35,3 @@ uint findMaxValueInHistArrayAndFixIndex(uint* _histArr,uint *_ptrToTheFlagVariab
     return tempMax;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
