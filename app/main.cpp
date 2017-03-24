@@ -28,12 +28,11 @@ using namespace std;
 
 int main( )
 {
-    Mat erlangePic = imread("example.jpg");
+    Mat erlangePic = imread("testpic.png");
     if(! erlangePic.data ) {
         cout <<  "Could not open or find the image" << std::endl ;
         return -1;
     }
-    double tempCount = 15;
     // declarate arr
     uint *histArrOfErlangPic = new uint[256];
     // init arr and filling from gray image
@@ -42,25 +41,25 @@ int main( )
     // the declaration of the flags of the describing min an max
     uint maxPoint = 0;
     uint higthOfErlangHist = findMaxValueInHistArrayAndFixIndex(histArrOfErlangPic, &maxPoint);
-    //show max and min values for debug
-    cout <<"max value = " << higthOfErlangHist << " in point - " << maxPoint << endl;
     //show histogram
     Mat histOfErlangPic = getNewHistWihtParam(histArrOfErlangPic, 256, higthOfErlangHist,4);
     
-    //some debug
-    std::cout << "erl max = " <<  findErlangNoiseMax(0, 255, tempCount, tempCount)<<std::endl;
-
+    //convert to single view to add math morph
+    Mat erlangSingleChannelPic = convertToSingleChannel(erlangePic);
+    //set size of square which will be a struct element
+    int sizeOfStructElement = 19;
     // use dilation
-    Mat dilationMat = dilationForGrayScale(erlangePic, 11);
-    Mat erosionMat = erosionForGrayScale(erlangePic, 3);
-    Mat dilationAndErosionMat = erosionForGrayScale(dilationMat, 3);
+    Mat dilationMat = dilationForGrayScale(erlangSingleChannelPic, sizeOfStructElement);
+    Mat erosionMat = erosionForGrayScale(erlangSingleChannelPic, sizeOfStructElement);
+    Mat dilationAndErosionMat = erosionForGrayScale(dilationMat, sizeOfStructElement);
     //show time
-    imshow("input image", erlangePic);
-    imshow("erlangPicHist",histOfErlangPic);
+    
+    imshow("input image", erlangSingleChannelPic);
+    //imshow("erlangPicHist",histOfErlangPic);
     imshow("pic after dilation", dilationMat);
     imshow("pic after erosion", erosionMat);
     imshow("final pic", dilationAndErosionMat);
-    imshow("tempPic",createPicForFilter(256,256));
+   // imshow("tempPic",createPicForFilter(256,256));
     waitKey(0);
     return 0;
 }
